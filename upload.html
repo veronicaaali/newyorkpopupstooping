@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://use.typekit.net/loz6shs.css" />
+    <link rel="stylesheet" href="https://use.typekit.net/pmv2dhq.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.css"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <title>UPLOAD</title>
+    <script src="./assets/jq.min.js"></script>
+  </head>
+  <body>
+    <div class="detail">
+        <div class="header"><a href="./index.html">www.<span>NEWYORKPOPUSTOOPING</span>.com</a></div>
+        <div class="upload-btn">
+            <input type="file" id="uploadFile">
+            <div class="cate button" id="uploadText">UPLOAD</div>
+        </div>
+        <div class="tip">Picture must be JPG. or PNG.</div>
+        <div class="cate detail-content">
+            <div class="title">Add Information for your item</div>
+            <div class="item">
+                <label>Category:</label>
+                <input type="text">
+            </div>
+            <div class="item">
+                <label>Condition:</label>
+                <input type="text">
+            </div>
+            <div class="item">
+                <label>Borough:</label>
+                <input type="text">
+            </div>
+        </div>
+        <div class="cate button" id="uploadText">SUBMIT</div>
+    </div>
+  </body>
+</html>
+<script>
+ $(document).ready(function () {
+    $('#uploadFile').change(function(){
+        var str = $(this).val();
+        if(str){
+            var fileNameArr = str.split('\\');
+            var fileName = fileNameArr[fileNameArr.length - 1] || 'UPLOAD'
+            $('#uploadText').html(fileName)
+        }else{
+            $('#uploadText').html('UPLOAD')
+        }
+    })
+ })
+</script>

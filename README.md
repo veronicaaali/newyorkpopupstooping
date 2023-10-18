@@ -1,2 +1,0 @@
-# newyorkpopupstooping
-project 2

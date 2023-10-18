@@ -12,7 +12,6 @@
     />
     <link rel="stylesheet" href="./style.css" />
     <title>STREET</title>
-    <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
     <script src="./assets/jq.min.js"></script>
   </head>
   <body>
@@ -31,7 +30,98 @@
         </div>
         <a href="./upload.html"><div class="cate button">UPLOAD</div></a>
       </div>
-      <div class="grid" id="container"></div>
+      <div class="home-grid" id="container">
+        <div class="left">
+          <div class="top">
+            <div class="img-box wt-30">
+              <img src="./imgs/IMG_4944.jpg" /><span>NOW FREE</span>
+            </div>
+            <div class="msg-box wt-30">
+              ROSEVERA Garner Chesterfield Settee Loveseat<br />
+              <span>Original Price :</span><br />
+              <i>$288</i>
+            </div>
+            <div class="img-box wt-40">
+              <img src="./imgs/IMG_5390.jpg" />
+            </div>
+          </div>
+          <div class="bottom">
+            <div class="bt-left">
+              <div>
+                <div class="msg-box">ACME Dresden Arm Chair PU&Cherry Oak</div>
+                <div class="img-box">
+                  <img src="./imgs/IMG_5384.png" />
+                  <i class="btr">Set of 2</i>
+                </div>
+                <div class="msg-box">
+                  <span>Original Price :</span> <i>$630</i>
+                </div>
+                <div class="img-box">
+                  <img src="./imgs/IMG_4928.jpg" />
+                  <span>NOW FREE</span>
+                </div>
+              </div>
+            </div>
+            <div class="bt-right">
+              <a href="./home.html"><div class="btn-more">CLICK HERE FOR MORE</div></a>
+              <div class="msg-box">
+                Mid-Century Brutalist Bar Stools<br />
+                <span>Original Price :</span> <i>$388</i>
+              </div>
+              <div class="img-box">
+                <img src="./imgs/IMG_5388.PNG" />
+                <i class="tpr">1960s</i>
+              </div>
+              <div class="img-box">
+                <img src="./imgs/IMG_4940.jpg" />
+                <span>NOW FREE</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="right">
+          <div style="padding: 10px">
+            <div class="img-box">
+              <img src="./imgs/IMG_5383.PNG" />
+            </div>
+            <div class="msg-box" style="margin-top: -80px">
+              <span style="color: #06ff00">BLANC BOUCLE</span> <br />Edward 87”
+              Fabric Sofa <br />
+              <p style="color: #dcdcdc; margin-top: 15px; font-size: 27px">
+                <em style="text-decoration: line-through">$2890</em> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NOW 36% OFF
+              </p>
+              <span>Original Price :</span><i>$1868</i>
+            </div>
+            <div class="img-box">
+              <img src="./imgs/IMG_4918.jpg" />
+              <span style="left: unset; right: 12px">NOW FREE</span>
+            </div>
+          </div>
+          <div style="border: 1px solid #000; padding: 5px">
+            <div class="img-box img2">
+              <img src="./imgs/IMG_5384.jpg" />
+              <img src="./imgs/IMG_4902.jpg" />
+              <i class="tpl">1965s</i>
+            </div>
+            <div class="msg-box">
+              Mid-century Modern Dutch Swivel Chair
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>NOW FREE</i><br />
+              <span>Original Price :</span><i>$1676</i>
+            </div>
+          </div>
+          <div class="img-box img2" style="margin-top: 5px">
+            <img src="./imgs/IMG_4927.jpg" />
+            <img src="./imgs/IMG_5393.png" style="margin-left: -30px" />
+            <div class="speci-txt">
+              <p>Original</p>
+              <p>Price</p>
+              <p>$695</p>
+            </div>
+            <span style="left: unset; right: 12px">NOW FREE</span>
+          </div>
+          <div class="msg-box">Herman Miller Aeron Task Chair</div>
+        </div>
+      </div>
     </main>
   </body>
 </html>
@@ -84,64 +174,14 @@
             })
           )
           allData = data
-          buildHtml(allData)
         })
         .catch((error) => console.log(error))
-    }
-    function buildHtml(data) {
-      let html = data
-        .map((e, i) => {
-          let classname = 'grid-item'
-          // if (i % 2 == 0) classname = 'grid-item--width2' <p>${e.mission}</p>
-          return `<div class="${classname}" style="background:${
-            bgColorMap[e.Borough] || ''
-          };color:${bgColorMap[e.Borough] ? '#fff' : ''}">
-                <div class="tile">${e.Name}</div>
-                <div class="pic"><img src="./imgs/${e.imgs}"></div>
-                <div class="box">${e.Price || ''}</div>
-                <div class="box" style="color:${
-                  bgColorMap[e.Borough] ? '#fff' : ''
-                }">Condition：${e.Condition}</div>
-                <div class="street">${e.Borough}</div>
-                </div>`
-        })
-        .join('')
-      if (html == '') html = '<div class="nomatch">Your search did not match any</div>'
-      $('#container').html(html)
-      var elem = document.querySelector('#container')
-      var iso = new Isotope(elem, {
-        // options
-        itemSelector: '.grid-item',
-        percentPosition: true,
-        masonry: {
-          // use element for option
-          columnWidth: '.grid-item'
-        }
-      })
     }
     const link = {
       catery: '',
       street: ''
     }
-    $('#catery').on('click', 'li', function () {
-      $(this).addClass('active').siblings().removeClass('active')
-      const tmp = $(this).text()
-      link.catery = tmp
-      const rst = allData.filter(
-        (e) => e.Name == tmp && (link.street == '' || e.Borough == link.street)
-      )
-      buildHtml(rst)
-    })
-    $('#catery-street').on('click', 'li', function () {
-      if ($(this).hasClass('none')) return
-      $(this).addClass('active').siblings().removeClass('active')
-      const tmp = $(this).text().slice(0, -1)
-      const rst = allData.filter(
-        (e) =>
-          (link.catery == '' || e.Name == link.catery) &&
-          e.Borough.toLowerCase().includes(tmp)
-      )
-      buildHtml(rst)
-    })
+    $('#catery').on('click', 'li', function () {})
+    $('#catery-street').on('click', 'li', function () {})
   })
 </script>

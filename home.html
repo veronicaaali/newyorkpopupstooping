@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://use.typekit.net/loz6shs.css" />
+    <link rel="stylesheet" href="https://use.typekit.net/pmv2dhq.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.css"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <title>STREET</title>
+    <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+    <script src="./assets/jq.min.js"></script>
+  </head>
+  <body>
+    <div class="header">
+      <a href="./index.html">www.<span>NEWYORKPOPUSTOOPING</span>.com</a>
+    </div>
+    <main>
+      <div class="gird-left">
+        <div class="cate" id="catery"></div>
+        <div class="cate street-cate" id="catery-street">
+          <li class="manha none">Manhattan:</li>
+          <li class="manha">east village/</li>
+          <li class="manha">hell's kitchen/</li>
+          <li class="manha">chelsea/</li>
+          <li class="manha">midtown/</li>
+          <li class="brk">brooklyn</li>
+          <li class="qus">queens</li>
+        </div>
+        <a href="./upload.html"><div class="cate button">UPLOAD</div></a>
+      </div>
+      <div class="grid" id="container"></div>
+    </main>
+  </body>
+</html>
+<script>
+  const bgColorMap = {
+    'East Village - Manhattan': '#85c7ba',
+    'Chelsea - Manhattan': '#77b6e4',
+    Bronx: '#fccd1c',
+    Flushing: '#e25d47',
+    Brooklyn: '#678b99',
+    'New York': '#e9909f',
+    'Midtown - Manhattan': '#77b6e4',
+    Queens: '#f99360',
+    'Long Island City': '#3f994e'
+  }
+  const color = {
+    sofa: '#06ff00',
+    chair: '#ff0000',
+    office: '#000cff',
+    cabinet: '#ff0000'
+  }
+  function uniqueFunc(arr, uniId) {
+    const res = new Map()
+    return arr.filter(
+      (item) => !res.has(item[uniId]) && res.set(item[uniId], 1)
+    )
+  }
+
+  $(document).ready(function () {
+    let allData = []
+    getAllData()
+    function getAllData() {
+      fetch('./data.json')
+        .then((response) => response.json())
+        .then((data) => {
+          const list = uniqueFunc(data, 'Name')
+          const streets = uniqueFunc(data, 'Borough')
+          $('#catery').html(
+            list.map((e) => {
+              let name = e.Name.toLocaleLowerCase()
+              let colorstr = ''
+              for (const key in color) {
+                if (name.includes(key)) {
+                  colorstr = color[key]
+                }
+              }
+              return `<li style="color:${colorstr}" class="${
+                colorstr ? 'blod a' + colorstr.substr(1) : ''
+              }">${e.Name}</li>`
+            })
+          )
+          allData = data
+          buildHtml(allData)
+        })
+        .catch((error) => console.log(error))
+    }
+    function buildHtml(data) {
+      let html = data
+        .map((e, i) => {
+          let classname = 'grid-item'
+          // if (i % 2 == 0) classname = 'grid-item--width2' <p>${e.mission}</p>
+          return `<div class="${classname}" style="background:${
+            bgColorMap[e.Borough] || ''
+          };color:${bgColorMap[e.Borough] ? '#fff' : ''}">
+                <div class="tile">${e.Name}</div>
+                <div class="pic"><img src="./imgs/${e.imgs}"></div>
+                <div class="box">${e.Price || ''}</div>
+                <div class="box" style="color:${
+                  bgColorMap[e.Borough] ? '#fff' : ''
+                }">Condition：${e.Condition}</div>
+                <div class="street">${e.Borough}</div>
+                </div>`
+        })
+        .join('')
+      if (html == '')
+        html = '<div class="nomatch">Your search did not match any</div>'
+      $('#container').html(html)
+      var elem = document.querySelector('#container')
+      var iso = new Isotope(elem, {
+        // options
+        itemSelector: '.grid-item',
+        percentPosition: true,
+        masonry: {
+          // use element for option
+          columnWidth: '.grid-item'
+        }
+      })
+    }
+    const link = {
+      catery: '',
+      street: ''
+    }
+    $('#catery').on('click', 'li', function () {
+      $(this).addClass('active').siblings().removeClass('active')
+      const tmp = $(this).text()
+      link.catery = tmp
+      const rst = allData.filter(
+        (e) => e.Name == tmp && (link.street == '' || e.Borough == link.street)
+      )
+      buildHtml(rst)
+    })
+    $('#catery-street').on('click', 'li', function () {
+      if ($(this).hasClass('none')) return
+      $(this).addClass('active').siblings().removeClass('active')
+      const tmp = $(this).text().slice(0, -1)
+      const rst = allData.filter(
+        (e) =>
+          (link.catery == '' || e.Name == link.catery) &&
+          e.Borough.toLowerCase().includes(tmp)
+      )
+      buildHtml(rst)
+    })
+  })
+</script>
